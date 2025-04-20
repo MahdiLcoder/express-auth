@@ -2,7 +2,6 @@ import User from "../model/User.js";
 import jwt from "jsonwebtoken";
 import handleErrors from "../utils/error.js";
 
-// JWT Token Creator
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET || "default_secret", {
         expiresIn: process.env.JWT_EXPIRE_IN || "1d"
@@ -19,11 +18,6 @@ export const signUpGet = (req, res) => {
 export const signUpPost = async (req, res) => {
     const { email, password, confirmPassword } = req.body;
 
-    // if (password !== confirmPassword) {
-    //     return res.status(400).json({
-    //         errors: { confirmPassword: "Passwords do not match" }
-    //     });
-    // }
 
     try {
         const newUser = await User.create({ email, password, confirmPassword });
@@ -83,3 +77,9 @@ export const loginPost = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+export const logOut = async (req, res) => {
+    res.cookie("jwt", "", { maxAge: 1 });
+
+    res.redirect('/login')
+}

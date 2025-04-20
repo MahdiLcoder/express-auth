@@ -24,7 +24,7 @@ app.use(cookieParser())
 connectDB(process.env.MONGO_URI);
 
 // Use Routes
-app.use(router);
+app.use('/', router);
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
